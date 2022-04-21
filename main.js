@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         ScoreSaber Download Buttons
 // @namespace    https://www.youtube.com/watch?v=_kuiQOowPHg
-// @version      1.0
-// @description  try to take over the world!
+// @downloadURL  https://raw.githubusercontent.com/Yorgei/scoresaber-download-button-userscript/main/main.js
+// @version      1.0.1
+// @description  i really dislike javascript
 // @author       Yorgei
-// @match        https://scoresaber.com/leaderboard/*
+// @match        *scoresaber.com/leaderboard/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=scoresaber.com
 // @grant        none
 // ==/UserScript==
