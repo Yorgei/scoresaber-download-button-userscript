@@ -2,7 +2,7 @@
 // @name         ScoreSaber Download Buttons
 // @namespace    https://www.youtube.com/watch?v=_kuiQOowPHg
 // @downloadURL  https://raw.githubusercontent.com/Yorgei/scoresaber-download-button-userscript/main/downloadbuttons.user.js
-// @version      1.0.1
+// @version      1.0.2
 // @description  i really dislike javascript
 // @author       Yorgei
 // @match        *://scoresaber.com/*
