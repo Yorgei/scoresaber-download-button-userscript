@@ -5,37 +5,56 @@
 // @version      1.0.1
 // @description  i really dislike javascript
 // @author       Yorgei
-// @match        *scoresaber.com/leaderboard/*
+// @match        *://scoresaber.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=scoresaber.com
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
-
     document.addEventListener('DOMContentLoaded', load);
 
-function getChartData(songHash) {
-    const beatsaverAPIURL = `https://api.beatsaver.com/maps/hash/${songHash}`;
-    return fetch(beatsaverAPIURL).then(response => {return response.json()})
-}
+    function getChartData(songHash) {
+        const beatsaverAPIURL = `https://api.beatsaver.com/maps/hash/${songHash}`;
+        return fetch(beatsaverAPIURL).then(response => {return response.json()})
+    }
 
 function load() {
-    const scoreSaberId = window.location.pathname.split('/').pop();
-    if (scoreSaberId == null) {
-        return;
-    }
-    console.log(`loaded on id ${scoreSaberId}`);
-    var isInjected = false;
     setInterval(function () {
+        let scoreSaberList = window.location.pathname.split('/');
+        if (!scoreSaberList.includes('leaderboard')) {
+            return;
+        }
+        if (document.querySelector('#epic-buttons') !== null){
+            return;
+        }
+        let scoreSaberId = scoreSaberList.pop();
+        if (scoreSaberId == null) {
+            return;
+        }
+        console.log(`loaded on id ${scoreSaberId}`);
+        var isInjected = false;
+
         if (isInjected) {
+            console.log('already injected');
             return;
         }
         console.log('checking');
-        if(document.querySelector('.content') !== null) {
-            console.log(document.querySelector('.text-muted').innerText);
-            const songHash = document.querySelector('.text-muted').innerText;
+        // setTimeout(() => { console.log('waiting for load'); }, 2000);
+        if(document.querySelectorAll('.window.card-content') !== null) {
+            const songHashText = document.querySelector('.text-muted')
+            if (!songHashText) {
+                return;
+            }
+            const songHash = songHashText.innerText;
             getChartData(songHash).then(function(res) {
+                if (res.error) {
+                    let errorDiv = document.createElement('div');
+                    let songDiv = document.querySelector('.card-content');
+                    errorDiv.innerHTML = '<div id=epic-buttons>Song not found</div>';
+                    songDiv.appendChild(errorDiv);
+                    return;
+                }
                 const songId = res.id;
                 const beatsaverDownloadURL = `https://as.csn.beatsaver.com/${songHash}.zip`;
                 const beatsaverSongURL = `https://beatsaver.com/maps/${songHash}`;
@@ -70,15 +89,15 @@ function load() {
                 <div class="song-request" title="Copy !bsr request"><i class="fab fa-twitch"></i></div>
                 </div>`
                 let songDiv = document.querySelector('.card-content');
-                if (document.querySelector('#epic-buttons') !== null) {
-                    return;
+                if (document.querySelector('#epic-buttons') == null) {
+                    songDiv.appendChild(buttonContainer);
+                    let twitchButton = document.getElementsByClassName('song-request')[0];
+                    twitchButton.addEventListener('click', () => {
+                        navigator.clipboard.writeText(twitchSongRequest);
+                        console.log('yeeaeeaa');
+                    })
                 }
-                songDiv.appendChild(buttonContainer);
-                let twitchButton = document.getElementsByClassName('song-request')[0];
-                twitchButton.addEventListener('click', () => {
-                    navigator.clipboard.writeText(twitchSongRequest);
-                    console.log('yeeaeeaa');
-                })
+
             })
 
             isInjected = true;
