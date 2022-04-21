@@ -2,7 +2,7 @@
 // @name         ScoreSaber Download Buttons
 // @namespace    https://www.youtube.com/watch?v=_kuiQOowPHg
 // @downloadURL  https://raw.githubusercontent.com/Yorgei/scoresaber-download-button-userscript/main/downloadbuttons.user.js
-// @version      1.0.2
+// @version      1.0.3
 // @description  i really dislike javascript
 // @author       Yorgei
 // @match        *://scoresaber.com/*
@@ -57,7 +57,7 @@ function load() {
                 }
                 const songId = res.id;
                 const beatsaverDownloadURL = `https://as.csn.beatsaver.com/${songHash}.zip`;
-                const beatsaverSongURL = `https://beatsaver.com/maps/${songHash}`;
+                const beatsaverSongURL = `https://beatsaver.com/maps/${songId}`;
                 const oneClickURL = `beatsaver://${songId}`;
                 const twitchSongRequest = `!bsr ${songId}`;
                 console.log(oneClickURL);
